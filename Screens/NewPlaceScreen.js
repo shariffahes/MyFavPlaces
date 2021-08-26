@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { useDispatch } from "react-redux";
 import ImagePicker from "../Components/ImagePicker";
+import LocationPicker from "../Components/LocationPicker";
 
 import Colors from "../Constants/Colors";
 import { addPalce } from "../Store/places_actions";
@@ -40,8 +41,8 @@ const formReducer = (state, action) => {
 
 const NewPlacePage = (props) => {
   const [formState, dispatchForm] = useReducer(formReducer, {
-    inputValue: { name: "", selectedImage: "" },
-    inputValidity: { name: false, selectedImage: false },
+    inputValue: { name: "", selectedImage: "", address: { lat: "", long: "" } },
+    inputValidity: { name: false, selectedImage: false, coordinates: false },
     formValidity: false,
   });
 
@@ -64,7 +65,11 @@ const NewPlacePage = (props) => {
   const submit = () => {
     if (!formState.formValidity) return;
     dispatch(
-      addPalce(formState.inputValue.name, formState.inputValue.selectedImage)
+      addPalce(
+        formState.inputValue.name,
+        formState.inputValue.selectedImage,
+        formState.inputValue.coordinates
+      )
     ).catch((error) =>
       Alert.alert("Error", error.toString(), [
         { text: "dismiss", style: "default" },
@@ -74,7 +79,7 @@ const NewPlacePage = (props) => {
   };
 
   return (
-    <ScrollView contentContainerStyle={{ flex: 1 }}>
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.form}>
         <Text style={styles.label}>Name</Text>
         <TextInput
@@ -87,6 +92,13 @@ const NewPlacePage = (props) => {
         <ImagePicker
           onImageTaken={(imageUri) => {
             onChangeHandler(imageUri, "selectedImage");
+          }}
+        />
+        <LocationPicker
+          navigation={props.navigation}
+          route={props.route}
+          onPickLocationHandler={(coordinates) => {
+            onChangeHandler(coordinates, "coordinates");
           }}
         />
         <View style={styles.buttonContainer}>

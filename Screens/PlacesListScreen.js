@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import { StyleSheet, View, Text, FlatList } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CustomHeaderButton from "../Components/CustomHeaderButton";
 import PlaceItem from "../Components/PlaceItem";
+import { loadPlaces } from "../Store/places_actions";
 
 const PlacesList = (props) => {
   useEffect(() => {
@@ -25,13 +26,16 @@ const PlacesList = (props) => {
     });
   }, []);
   const places = useSelector((rootState) => rootState.placesState.places);
-  console.log(places);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(loadPlaces());
+  }, [dispatch]);
   const renderList = ({ item }) => {
     return (
       <PlaceItem
         title={item.title}
         imageURL={item.imagePath}
-        address={null}
+        address={item.address}
         onViewSelect={() => {
           props.navigation.navigate("Details", {
             title: item.title,

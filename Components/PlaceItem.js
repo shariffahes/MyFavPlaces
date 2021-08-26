@@ -22,7 +22,9 @@ const PlaceItem = (props) => {
           <Text style={{ fontSize: 16, fontWeight: "bold", marginBottom: 10 }}>
             {props.title}
           </Text>
-          <Text>props.address</Text>
+          <View style={{ padding: 8, width: "92%" }}>
+            <Text>{props.address}</Text>
+          </View>
         </View>
       </View>
     </TouchableWithoutFeedback>
@@ -41,6 +43,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
     margin: 10,
+    overflow: "hidden",
   },
   image: {
     backgroundColor: "#ccc",
@@ -50,6 +53,12 @@ const styles = StyleSheet.create({
     margin: 10,
     borderColor: Colors.primary,
     borderWidth: 1,
+  },
+  infoContainer: {
+    justifyContent: "space-evenly",
+    alignItems: "flex-start",
+    paddingTop: 10,
+    paddingBottom: 5,
   },
 });
 
